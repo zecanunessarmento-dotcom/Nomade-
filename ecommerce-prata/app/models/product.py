@@ -27,3 +27,8 @@ class Product(Base):
         "Category",
         back_populates="products"
     )
+    
+    images = relationship(
+    "ProductImage",
+    back_populates="product"
+)
