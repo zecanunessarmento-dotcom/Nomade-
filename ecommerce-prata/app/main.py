@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app.routers.category_router import (
     router as category_router
 )
-from app.database import engine
+from core.database import engine
 from app.models.product import Base
 from app.models.category import Category
 from app.routers.product_router import router as product_router
