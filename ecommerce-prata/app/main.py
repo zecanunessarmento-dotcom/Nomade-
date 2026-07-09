@@ -2,18 +2,21 @@ from fastapi import FastAPI
 from app.routers.category_router import (
     router as category_router
 )
-from core.database import engine
-from app.models.product import Base
+from app.core.database import Base, engine
+from app.models.user import User
+from app.models.product import Product
+from app.models.product_image import ProductImage
 from app.models.category import Category
 from app.routers.product_router import router as product_router
 from fastapi.staticfiles import StaticFiles
 from app.routers.upload import (
     router as upload_router
 )
-Base.metadata.create_all(bind=engine)
 from app.routers.auth_router import (
     router as auth_router
 )
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="E-commerce de Joias"

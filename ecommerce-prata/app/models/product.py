@@ -1,34 +1,21 @@
-from sqlalchemy import Column, Integer, String, Float
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from app.core.database import Base
 
-Base = declarative_base()
 
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(Integer, primary_key=True)
-
-    name = Column(String)
-
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
     description = Column(String)
+    price = Column(Float, nullable=False)
+    stock = Column(Integer, nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
-    price = Column(Float)
-
-    stock = Column(Integer)
-
-    category_id = Column(
-        Integer,
-        ForeignKey("categories.id")
-    )
-
-    category = relationship(
-        "Category",
-        back_populates="products"
-    )
-    
+    category = relationship("Category", back_populates="products")
     images = relationship(
-    "ProductImage",
-    back_populates="product"
-)
+        "ProductImage",
+        back_populates="product",
+        cascade="all, delete-orphan"
+    )

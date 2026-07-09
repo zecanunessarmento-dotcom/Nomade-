@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
-
 from app.models.user import User
-
+from app.models.product import Product
 
 class UserRepository:
 
@@ -33,4 +32,19 @@ class UserRepository:
         self.db.query(User)
         .filter(User.email == email)
         .first()
-    )   
+    ) 
+
+    def get_by_id(self, user_id: int):
+        return (
+        self.db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+    class ProductRepository:
+
+        def __init__(self, db):
+            self.db = db
+
+
+        def list_all(self):
+            return self.db.query(Product).all()
