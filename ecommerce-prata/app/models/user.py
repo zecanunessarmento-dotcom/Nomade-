@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from datetime import datetime
 from app.core.database import Base
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__ = "users"
@@ -16,3 +17,9 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+cart = relationship(
+    "Cart",
+    back_populates="user",
+    uselist=False
+)

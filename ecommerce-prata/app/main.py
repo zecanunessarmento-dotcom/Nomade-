@@ -15,6 +15,8 @@ from app.routers.upload import (
 from app.routers.auth_router import (
     router as auth_router
 )
+from app.routers import cart_router
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -32,6 +34,7 @@ app.include_router(product_router)
 app.include_router(category_router)
 app.include_router(upload_router)
 app.include_router(auth_router)
+app.include_router(cart_router.router)
 
 @app.get("/")
 def home():
