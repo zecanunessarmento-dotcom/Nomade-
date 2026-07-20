@@ -23,3 +23,8 @@ class Product(Base):
     cart_items = relationship(
     "CartItem"
 )
+    
+    order_items = relationship(
+        "OrderItem",
+        back_populates="product"
+    )

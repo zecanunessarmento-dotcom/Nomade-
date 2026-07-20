@@ -16,7 +16,7 @@ from app.routers.auth_router import (
     router as auth_router
 )
 from app.routers import cart_router
-
+from app.routers.order_router import router as order_router
 
 Base.metadata.create_all(bind=engine)
 
