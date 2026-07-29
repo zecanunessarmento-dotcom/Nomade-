@@ -1,6 +1,7 @@
 from decimal import Decimal
 from pydantic import BaseModel
 from datetime import datetime
+from app.enums.order_status import OrderStatus
 
 class OrderItemResponse(BaseModel):
 
@@ -21,7 +22,7 @@ class OrderResponse(BaseModel):
 
     id: int
 
-    status: str
+    status: OrderStatus
 
     subtotal: Decimal
 

@@ -8,7 +8,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
+from app.enums.order_status import OrderStatus
 from app.core.database import Base
 
 
@@ -26,8 +26,8 @@ class Order(Base):
     status = Column(
         String,
         nullable=False,
-        default="PENDING"
-    )
+        default=OrderStatus.PENDING.value
+)
 
     total = Column(
         Numeric(10, 2),

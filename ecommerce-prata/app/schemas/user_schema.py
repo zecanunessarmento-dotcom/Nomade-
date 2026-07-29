@@ -1,5 +1,9 @@
 from pydantic import BaseModel, EmailStr
+from app.enums.order_status import OrderStatus
 
+class OrderResponse(BaseModel):
+
+    status: OrderStatus
 
 class UserCreate(BaseModel):
 
