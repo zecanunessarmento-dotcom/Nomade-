@@ -8,34 +8,55 @@ class CartRepository:
 
     def __init__(self, db: Session):
         self.db = db
-    
-    def get_by_user_id(self, user_id: int):
+
+    # ==========================================
+    # Buscar carrinho pelo usuário
+    # ==========================================
+
+    def get_by_user_id(
+        self,
+        user_id: int
+    ) -> Cart | None:
 
         return (
             self.db.query(Cart)
             .filter(Cart.user_id == user_id)
             .first()
         )
-    
-    def create(self, user_id: int):
+
+    # ==========================================
+    # Buscar ou criar carrinho
+    # ==========================================
+
+    def get_or_create_by_user_id(
+        self,
+        user_id: int
+    ) -> Cart:
+
+        cart = self.get_by_user_id(user_id)
+
+        if cart:
+            return cart
 
         cart = Cart(
-        user_id=user_id
+            user_id=user_id
         )
 
         self.db.add(cart)
 
-        self.db.commit()
-
-        self.db.refresh(cart)
+        self.db.flush()
 
         return cart
-    
+
+    # ==========================================
+    # Buscar item específico do carrinho
+    # ==========================================
+
     def get_item(
         self,
         cart_id: int,
         product_id: int
-    ):
+    ) -> CartItem | None:
 
         return (
             self.db.query(CartItem)
@@ -45,47 +66,69 @@ class CartRepository:
             )
             .first()
         )
-    
+
+    # ==========================================
+    # Adicionar item ao carrinho
+    # ==========================================
+
     def create_item(
         self,
         cart_id: int,
         product_id: int,
         quantity: int
-    ):
+    ) -> CartItem:
 
-        item = CartItem(
+        cart_item = CartItem(
             cart_id=cart_id,
             product_id=product_id,
             quantity=quantity
         )
 
-        self.db.add(item)
+        self.db.add(cart_item)
 
-        self.db.commit()
+        self.db.flush()
 
-        self.db.refresh(item)
+        return cart_item
 
-        return item
-    
-    def update_quantity(
+    # ==========================================
+    # Buscar todos os itens do carrinho
+    # ==========================================
+
+    def get_items(
         self,
-        item: CartItem,
-        quantity: int
-    ):
+        cart_id: int
+    ) -> list[CartItem]:
 
-        item.quantity = quantity
+        return (
+            self.db.query(CartItem)
+            .filter(
+                CartItem.cart_id == cart_id
+            )
+            .all()
+        )
 
-        self.db.commit()
+    # ==========================================
+    # Remover item
+    # ==========================================
 
-        self.db.refresh(item)
-
-        return item
-    
-    def remove_item(
+    def delete_item(
         self,
         item: CartItem
-    ):
+    ) -> None:
 
         self.db.delete(item)
 
-        self.db.commit()
+        self.db.flush()
+
+    # ==========================================
+    # Limpar carrinho
+    # ==========================================
+
+    def clear(
+        self,
+        cart: Cart
+    ) -> None:
+
+        cart.items.clear()
+
+        self.db.flush()

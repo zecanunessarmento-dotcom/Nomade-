@@ -33,5 +33,6 @@ class CartItem(Base):
     )
 
     product = relationship(
-        "Product"
+        "Product",
+        back_populates="cart_items"
     )

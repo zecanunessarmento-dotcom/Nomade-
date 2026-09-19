@@ -1,19 +1,58 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String
 from sqlalchemy.orm import relationship
+
 from app.core.database import Base
 
 
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    description = Column(String)
-    price = Column(Float, nullable=False)
-    stock = Column(Integer, nullable=False)
-    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    # ==========================================================
+    # Campos
+    # ==========================================================
 
-    category = relationship("Category", back_populates="products")
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    name = Column(
+        String(150),
+        nullable=False,
+        index=True
+    )
+
+    description = Column(
+        String(1000),
+        nullable=True
+    )
+
+    price = Column(
+        Numeric(10, 2),
+        nullable=False
+    )
+
+    stock = Column(
+        Integer,
+        nullable=False
+    )
+
+    category_id = Column(
+        Integer,
+        ForeignKey("categories.id"),
+        nullable=False
+    )
+
+    # ==========================================================
+    # Relacionamentos
+    # ==========================================================
+
+    category = relationship(
+        "Category",
+        back_populates="products"
+    )
+
     images = relationship(
         "ProductImage",
         back_populates="product",
@@ -21,9 +60,10 @@ class Product(Base):
     )
 
     cart_items = relationship(
-    "CartItem"
-)
-    
+        "CartItem",
+        back_populates="product"
+    )
+
     order_items = relationship(
         "OrderItem",
         back_populates="product"

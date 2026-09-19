@@ -75,8 +75,3 @@ tax = Column(
     nullable=False,
     default=0
 )
-
-total = Column(
-    Numeric(10, 2),
-    nullable=False
-)
